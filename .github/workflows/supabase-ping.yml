@@ -1,0 +1,16 @@
+name: Keep Supabase alive
+
+on:
+  schedule:
+    - cron: "0 10 */5 * *"   # hvert 5. dag kl. 10:00 UTC
+  workflow_dispatch:          # kan også køres manuelt
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase
+        run: |
+          curl -sf "${{ secrets.SUPABASE_URL }}/rest/v1/bookings?limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
