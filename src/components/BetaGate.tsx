@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const BETA_PASSWORD = "ariasalon2026";
+const BETA_PASSWORD = "aria2026";
 
 const BetaGate = ({ children }: { children: React.ReactNode }) => {
   const [unlocked, setUnlocked] = useState(
