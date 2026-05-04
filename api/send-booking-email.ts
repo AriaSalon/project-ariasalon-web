@@ -2,8 +2,6 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const config = { runtime: "edge" };
-
 export default async function handler(req: Request) {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
