@@ -20,8 +20,20 @@ const Gallery = () => (
           Vores arbejde
         </h2>
         <div className="divider-gold mx-auto mb-8" />
-        <p className="text-muted-foreground mb-8 leading-relaxed">
-          Se klip, reels og billeder fra salonen på vores Facebook-side.
+
+        <div className="rounded-xl overflow-hidden mb-8 aspect-[9/16] max-h-[600px] mx-auto">
+          <video
+            src="/Videos/v24044gl0000d7rjf37og65kt1m6mln0.mp4"
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        </div>
+
+        <p className="text-muted-foreground mb-6 leading-relaxed">
+          Se mere på vores Facebook-side
         </p>
         <a
           href="https://www.facebook.com/p/Aria-salon-100063702064710/"
@@ -30,7 +42,7 @@ const Gallery = () => (
           className="inline-flex items-center gap-2.5 rounded-md bg-[#1877F2] px-7 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <FacebookIcon />
-          Se vores arbejde på Facebook
+          Aria Salon på Facebook
         </a>
       </motion.div>
     </div>
