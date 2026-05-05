@@ -11,7 +11,7 @@ export default async function handler(req: Request) {
     const { name, email, service, date, time, price } = await req.json();
 
     await resend.emails.send({
-      from: "Aria Salon <noreply@ariasalon.dk>",
+      from: "Aria Salon <onboarding@resend.dev>",
       to: email,
       subject: "Booking bekræftelse – Aria Salon",
       html: `
