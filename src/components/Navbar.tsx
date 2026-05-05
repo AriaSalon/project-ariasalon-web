@@ -40,7 +40,7 @@ const Navbar = () => {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block px-6 py-3 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="block px-6 py-4 text-base text-muted-foreground hover:text-foreground transition-colors"
             >
               {l.label}
             </a>

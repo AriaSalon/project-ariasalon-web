@@ -143,7 +143,7 @@ function Step2({ selected, onSelect }: { selected: Date | null; onSelect: (d: Da
             const isSelected = selected ? format(day, "yyyy-MM-dd") === format(selected, "yyyy-MM-dd") : false;
             return (
               <button key={format(day, "yyyy-MM-dd")} type="button" disabled={disabled} onClick={() => onSelect(day)}
-                className={`aspect-square flex items-center justify-center rounded-md text-sm transition-colors m-0.5 touch-manipulation
+                className={`aspect-square flex items-center justify-center rounded-md text-sm transition-colors m-px touch-manipulation min-h-[44px]
                   ${disabled ? "text-muted-foreground/30 cursor-not-allowed" : ""}
                   ${isSelected ? "bg-primary text-background font-semibold" : ""}
                   ${!disabled && !isSelected ? "active:bg-secondary" : ""}`}>

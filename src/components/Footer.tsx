@@ -8,24 +8,25 @@ const FacebookIcon = () => (
 
 const Footer = () => (
   <footer className="border-t border-border py-8">
-    <div className="container text-center">
+    <div className="container text-center space-y-2">
       <p className="text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Aria Salon · Vesterbrogade 86, 1620 København V · <a href="tel:+4553770037" className="hover:text-primary transition-colors">+45 53 77 00 37</a>
+        © {new Date().getFullYear()} Aria Salon · Vesterbrogade 86, 1620 København V
+      </p>
+      <p className="text-xs text-muted-foreground">
+        <a href="tel:+4553770037" className="hover:text-primary transition-colors">+45 53 77 00 37</a>
         {" "}·{" "}
         <Link to="/privatlivspolitik" className="hover:text-primary transition-colors">Privatlivspolitik</Link>
         {" "}·{" "}
         <Link to="/admin" className="text-muted-foreground/60 hover:text-primary transition-colors">Admin</Link>
       </p>
-      <p className="text-xs text-muted-foreground/50 mt-1">
-        Frisør på Vesterbro, København
-      </p>
-      <div className="flex justify-center mt-3">
+      <p className="text-xs text-muted-foreground/50">Frisør på Vesterbro, København</p>
+      <div className="flex justify-center pt-1">
         <a
           href="https://www.facebook.com/p/Aria-salon-100063702064710/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Aria Salon på Facebook"
-          className="text-muted-foreground/50 hover:text-primary transition-colors"
+          className="text-muted-foreground/50 hover:text-primary transition-colors p-2"
         >
           <FacebookIcon />
         </a>

@@ -48,9 +48,14 @@
     @apply border-border;
   }
 
+  html {
+    scroll-padding-top: 56px;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4 {
