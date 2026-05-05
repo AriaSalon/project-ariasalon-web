@@ -36,7 +36,7 @@ const BetaGate = ({ children }: { children: React.ReactNode }) => {
             value={input}
             onChange={(e) => { setInput(e.target.value); setError(false); }}
             placeholder="Adgangskode"
-            className="w-full rounded-md bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 text-sm focus:outline-none focus:border-primary"
+            className="w-full rounded-md bg-white/10 border border-white/20 text-white placeholder:text-white/30 px-4 py-3 text-base focus:outline-none focus:border-primary"
             autoFocus
           />
           {error && <p className="text-red-400 text-xs">Forkert adgangskode</p>}

@@ -259,17 +259,17 @@ function Step4({ service, date, time, name, phone, email, note, onName, onPhone,
         <div>
           <label className="block text-sm font-medium mb-1.5">Navn</label>
           <input type="text" required value={name} onChange={e => onName(e.target.value)} placeholder="Dit fulde navn"
-            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary transition-shadow" />
+            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-base outline-none focus:ring-2 focus:ring-primary transition-shadow" />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1.5">Telefonnummer</label>
           <input type="tel" required value={phone} onChange={e => onPhone(e.target.value)} placeholder="+45 12 34 56 78"
-            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary transition-shadow" />
+            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-base outline-none focus:ring-2 focus:ring-primary transition-shadow" />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1.5">Email</label>
           <input type="email" required value={email} onChange={e => onEmail(e.target.value)} placeholder="din@email.dk"
-            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary transition-shadow" />
+            className="w-full rounded-md border border-border bg-secondary px-3 py-2.5 text-base outline-none focus:ring-2 focus:ring-primary transition-shadow" />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1.5">
