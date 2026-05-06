@@ -1,4 +1,6 @@
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const FacebookIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -14,51 +16,86 @@ const videos = [
   "/Videos/v24044gl0000d7id6mfog65o6agp7ddg.mp4",
 ];
 
-const Gallery = () => (
-  <section className="py-20 md:py-28 bg-secondary/50">
-    <div className="container max-w-4xl">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="text-center"
-      >
-        <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
-          Vores arbejde
-        </h2>
-        <div className="divider-gold mx-auto mb-10" />
+const Gallery = () => {
+  const [current, setCurrent] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
-          {videos.map((src, i) => (
-            <div key={i} className="rounded-xl overflow-hidden aspect-[9/16]">
+  function goTo(index: number) {
+    setCurrent(index);
+    setTimeout(() => videoRef.current?.play(), 50);
+  }
+
+  function prev() { goTo((current - 1 + videos.length) % videos.length); }
+  function next() { goTo((current + 1) % videos.length); }
+
+  return (
+    <section className="py-20 md:py-28 bg-secondary/50">
+      <div className="container max-w-xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">Vores arbejde</h2>
+          <div className="divider-gold mx-auto mb-8" />
+
+          <div className="relative">
+            <div className="rounded-xl overflow-hidden aspect-[9/16] max-h-[600px] mx-auto">
               <video
-                src={src}
+                ref={videoRef}
+                key={current}
+                src={videos[current]}
                 className="w-full h-full object-cover"
                 autoPlay
                 muted
-                loop
                 playsInline
+                onEnded={next}
               />
             </div>
-          ))}
-        </div>
 
-        <p className="text-muted-foreground mb-6 leading-relaxed">
-          Se mere på vores Facebook-side
-        </p>
-        <a
-          href="https://www.facebook.com/p/Aria-salon-100063702064710/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2.5 rounded-md bg-[#1877F2] px-7 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <FacebookIcon />
-          Aria Salon på Facebook
-        </a>
-      </motion.div>
-    </div>
-  </section>
-);
+            <button
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full p-2 transition-colors"
+              aria-label="Forrige video"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full p-2 transition-colors"
+              aria-label="Næste video"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+
+            <div className="flex justify-center gap-2 mt-4">
+              {videos.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`w-2 h-2 rounded-full transition-colors ${i === current ? "bg-primary" : "bg-border"}`}
+                  aria-label={`Video ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          <p className="text-muted-foreground mt-8 mb-6 leading-relaxed">Se mere på vores Facebook-side</p>
+          <a
+            href="https://www.facebook.com/p/Aria-salon-100063702064710/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 rounded-md bg-[#1877F2] px-7 py-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <FacebookIcon />
+            Aria Salon på Facebook
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 export default Gallery;
