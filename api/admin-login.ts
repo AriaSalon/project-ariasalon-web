@@ -1,17 +1,10 @@
+import { createHmac } from "node:crypto";
+
 const TOKEN_TTL_MS = 8 * 60 * 60 * 1000;
 
-async function hmac(secret: string, data: string): Promise<string> {
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey(
-    "raw", enc.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(data));
-  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
-}
-
-async function createToken(secret: string): Promise<string> {
+function createToken(secret: string): string {
   const exp = (Date.now() + TOKEN_TTL_MS).toString();
-  const sig = await hmac(secret, exp);
+  const sig = createHmac("sha256", secret).update(exp).digest("hex");
   return `${exp}.${sig}`;
 }
 
@@ -40,12 +33,11 @@ export default async function handler(req: Request): Promise<Response> {
       });
     }
 
-    const token = await createToken(sessionSecret);
-    return new Response(JSON.stringify({ token }), {
+    return new Response(JSON.stringify({ token: createToken(sessionSecret) }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (err) {
+  } catch {
     return new Response(JSON.stringify({ error: "Bad request" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
