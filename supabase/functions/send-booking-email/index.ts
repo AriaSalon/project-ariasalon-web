@@ -1,15 +1,32 @@
-export default async function handler(req: Request): Promise<Response> {
-  if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
-  }
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+serve(async (req) => {
   try {
-    const { name, email, service, date, time, price } = await req.json();
+    const payload = await req.json();
+    const booking = payload.record;
+
+    if (!booking || !booking.email) {
+      return new Response("No booking data", { status: 400 });
+    }
+
+    const { name, email, service, date, time, price } = booking;
+
+    const dateFormatted = new Intl.DateTimeFormat("da-DK", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(new Date(date));
+
+    const resendKey = Deno.env.get("RESEND_API_KEY");
+    if (!resendKey) {
+      return new Response("Missing RESEND_API_KEY", { status: 500 });
+    }
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
+        "Authorization": `Bearer ${resendKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -32,7 +49,7 @@ export default async function handler(req: Request): Promise<Response> {
                 </tr>
                 <tr>
                   <td style="color: #888; padding: 6px 0;">Dato</td>
-                  <td style="font-weight: 600; text-align: right;">${date}</td>
+                  <td style="font-weight: 600; text-align: right;">${dateFormatted}</td>
                 </tr>
                 <tr>
                   <td style="color: #888; padding: 6px 0;">Tidspunkt</td>
@@ -54,21 +71,14 @@ export default async function handler(req: Request): Promise<Response> {
     });
 
     if (!res.ok) {
-      const error = await res.text();
-      return new Response(JSON.stringify({ error }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
+      const err = await res.text();
+      console.error("Resend error:", err);
+      return new Response(JSON.stringify({ error: err }), { status: 500 });
     }
 
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch (err) {
-    return new Response(JSON.stringify({ error: String(err) }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error("Edge function error:", err);
+    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
   }
-}
+});

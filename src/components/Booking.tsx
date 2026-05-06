@@ -344,19 +344,6 @@ const Booking = () => {
         name: name.trim(), phone: phone.trim(), email: email.trim(),
         ...(note.trim() ? { note: note.trim() } : {}),
       });
-      // Send bekræftelsesmail — fejl her blokerer ikke booking-bekræftelsen
-      fetch("/api/send-booking-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          service: service!.name,
-          date: format(date!, "EEEE d. MMMM yyyy", { locale: da }),
-          time: time!,
-          price: service!.price,
-        }),
-      }).catch(() => {});
       setDone(true);
     } catch {
       setSubmitError(true);
