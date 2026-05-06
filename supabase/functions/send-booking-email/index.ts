@@ -1,15 +1,17 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
 serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
   try {
-    const payload = await req.json();
-    const booking = payload.record;
-
-    if (!booking || !booking.email) {
-      return new Response("No booking data", { status: 400 });
-    }
-
-    const { name, email, service, date, time, price } = booking;
+    const { name, email, service, date, time, price } = await req.json();
 
     const dateFormatted = new Intl.DateTimeFormat("da-DK", {
       weekday: "long",
@@ -20,7 +22,10 @@ serve(async (req) => {
 
     const resendKey = Deno.env.get("RESEND_API_KEY");
     if (!resendKey) {
-      return new Response("Missing RESEND_API_KEY", { status: 500 });
+      return new Response(JSON.stringify({ error: "Missing RESEND_API_KEY" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const res = await fetch("https://api.resend.com/emails", {
@@ -35,26 +40,13 @@ serve(async (req) => {
         subject: "Booking bekræftelse – Aria Salon",
         html: `
           <div style="font-family: Georgia, serif; max-width: 520px; margin: 0 auto; padding: 48px 24px; color: #1a1a1a; background: #ffffff;">
-            <h1 style="font-size: 26px; font-weight: 600; margin: 0 0 8px 0;">
-              Tak for din booking, ${name}!
-            </h1>
-            <p style="color: #666; margin: 0 0 36px 0; font-size: 15px;">
-              Vi glæder os til at se dig hos Aria Salon.
-            </p>
+            <h1 style="font-size: 26px; font-weight: 600; margin: 0 0 8px 0;">Tak for din booking, ${name}!</h1>
+            <p style="color: #666; margin: 0 0 36px 0; font-size: 15px;">Vi glæder os til at se dig hos Aria Salon.</p>
             <div style="background: #f8f8f8; border-radius: 8px; padding: 24px; margin-bottom: 32px;">
               <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                <tr>
-                  <td style="color: #888; padding: 6px 0;">Ydelse</td>
-                  <td style="font-weight: 600; text-align: right;">${service}</td>
-                </tr>
-                <tr>
-                  <td style="color: #888; padding: 6px 0;">Dato</td>
-                  <td style="font-weight: 600; text-align: right;">${dateFormatted}</td>
-                </tr>
-                <tr>
-                  <td style="color: #888; padding: 6px 0;">Tidspunkt</td>
-                  <td style="font-weight: 600; text-align: right;">${time}</td>
-                </tr>
+                <tr><td style="color: #888; padding: 6px 0;">Ydelse</td><td style="font-weight: 600; text-align: right;">${service}</td></tr>
+                <tr><td style="color: #888; padding: 6px 0;">Dato</td><td style="font-weight: 600; text-align: right;">${dateFormatted}</td></tr>
+                <tr><td style="color: #888; padding: 6px 0;">Tidspunkt</td><td style="font-weight: 600; text-align: right;">${time}</td></tr>
                 <tr style="border-top: 1px solid #e5e5e5;">
                   <td style="color: #888; padding: 12px 0 6px 0;">Pris</td>
                   <td style="font-weight: 700; text-align: right; padding-top: 12px;">${price}</td>
@@ -72,13 +64,20 @@ serve(async (req) => {
 
     if (!res.ok) {
       const err = await res.text();
-      console.error("Resend error:", err);
-      return new Response(JSON.stringify({ error: err }), { status: 500 });
+      return new Response(JSON.stringify({ error: err }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (err) {
-    console.error("Edge function error:", err);
-    return new Response(JSON.stringify({ error: String(err) }), { status: 500 });
+    return new Response(JSON.stringify({ error: String(err) }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

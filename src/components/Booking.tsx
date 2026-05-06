@@ -344,6 +344,16 @@ const Booking = () => {
         name: name.trim(), phone: phone.trim(), email: email.trim(),
         ...(note.trim() ? { note: note.trim() } : {}),
       });
+      supabase.functions.invoke("send-booking-email", {
+        body: {
+          name: name.trim(),
+          email: email.trim(),
+          service: service!.name,
+          date: format(date!, "yyyy-MM-dd"),
+          time: time!,
+          price: service!.price,
+        },
+      }).catch(() => {});
       setDone(true);
     } catch {
       setSubmitError(true);
