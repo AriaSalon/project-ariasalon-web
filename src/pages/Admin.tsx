@@ -268,7 +268,7 @@ const Admin = () => {
   const events = bookings.map(bookingToEvent);
 
   function handleLogout() {
-    sessionStorage.removeItem("admin_access");
+    sessionStorage.removeItem("admin_token");
     navigate("/");
   }
 
@@ -481,8 +481,9 @@ const Admin = () => {
           eventContent={(arg) => {
             const b = arg.event.extendedProps.booking as Booking;
             if (!b) return;
-            const name = b.name.replace(/</g, "&lt;");
-            const phone = b.phone.replace(/</g, "&lt;");
+            const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+            const name = esc(b.name);
+            const phone = esc(b.phone);
             return {
               html: `<div style="padding:2px 5px;overflow:hidden;height:100%;display:flex;flex-direction:column;justify-content:center;gap:1px;">
                 <span style="font-size:11px;font-weight:600;line-height:1.3;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${arg.timeText} · ${name} · ${phone}</span>

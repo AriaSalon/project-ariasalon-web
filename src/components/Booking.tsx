@@ -324,7 +324,12 @@ const Booking = () => {
     if (step === 0) return service !== null;
     if (step === 1) return date !== null;
     if (step === 2) return time !== null && time !== "" && (capacityMap.get(time) ?? 0) < MAX_CAPACITY;
-    if (step === 3) return name.trim().length > 0 && phone.trim().length > 0 && email.trim().length > 0;
+    if (step === 3) {
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      const phoneOk = phone.trim().length >= 8 && phone.trim().length <= 20;
+      const nameOk = name.trim().length > 0 && name.trim().length <= 100;
+      return nameOk && phoneOk && emailOk;
+    }
     return false;
   }
 
