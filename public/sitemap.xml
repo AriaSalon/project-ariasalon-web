@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>[WEBSITE_URL]/</loc>
+    <loc>https://ariasalon.dk/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>[WEBSITE_URL]/privatlivspolitik</loc>
+    <loc>https://ariasalon.dk/privatlivspolitik</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

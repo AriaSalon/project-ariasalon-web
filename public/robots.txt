@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/login
 
-Sitemap: [WEBSITE_URL]/sitemap.xml
+Sitemap: https://ariasalon.dk/sitemap.xml
