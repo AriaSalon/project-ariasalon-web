@@ -6,9 +6,17 @@ const FacebookIcon = () => (
   </svg>
 );
 
+const videos = [
+  "/Videos/v24044gl0000d7rjf37og65kt1m6mln0.mp4",
+  "/Videos/v24044gl0000d7pn39nog65hs6orjr0g.mp4",
+  "/Videos/v24044gl0000d7nlj0fog65nnqphtac0.mp4",
+  "/Videos/v24044gl0000d7lpunfog65hbftgdba0.mp4",
+  "/Videos/v24044gl0000d7id6mfog65o6agp7ddg.mp4",
+];
+
 const Gallery = () => (
   <section className="py-20 md:py-28 bg-secondary/50">
-    <div className="container max-w-xl">
+    <div className="container max-w-4xl">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -19,17 +27,21 @@ const Gallery = () => (
         <h2 className="font-display text-3xl md:text-4xl font-semibold mb-4">
           Vores arbejde
         </h2>
-        <div className="divider-gold mx-auto mb-8" />
+        <div className="divider-gold mx-auto mb-10" />
 
-        <div className="rounded-xl overflow-hidden mb-8 aspect-[9/16] max-h-[600px] mx-auto">
-          <video
-            src="/Videos/v24044gl0000d7rjf37og65kt1m6mln0.mp4"
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          />
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-10">
+          {videos.map((src, i) => (
+            <div key={i} className="rounded-xl overflow-hidden aspect-[9/16]">
+              <video
+                src={src}
+                className="w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            </div>
+          ))}
         </div>
 
         <p className="text-muted-foreground mb-6 leading-relaxed">
