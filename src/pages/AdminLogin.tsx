@@ -1,34 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string;
+
 const AdminLogin = () => {
   const [input, setInput] = useState("");
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
-    setError(false);
-    try {
-      const res = await fetch("/api/admin-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: input }),
-      });
-      if (res.ok) {
-        const { token } = await res.json();
-        sessionStorage.setItem("admin_token", token);
-        navigate("/admin");
-      } else {
-        setError(true);
-        setInput("");
-      }
-    } catch {
+    if (input === ADMIN_PASSWORD) {
+      sessionStorage.setItem("admin_access", "true");
+      navigate("/admin");
+    } else {
       setError(true);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -54,10 +40,9 @@ const AdminLogin = () => {
           </div>
           <button
             type="submit"
-            disabled={loading}
-            className="w-full rounded-md bg-primary text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-60"
+            className="w-full rounded-md bg-primary text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
           >
-            {loading ? "Logger ind…" : "Log ind"}
+            Log ind
           </button>
         </form>
       </div>
