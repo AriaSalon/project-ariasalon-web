@@ -16,9 +16,9 @@ const Index = () => (
     <main>
       <Hero />
       <Reviews />
-      <Gallery />
-      <About />
       <VirtualTour />
+      <About />
+      <Gallery />
       <OmOs />
       <Services />
       <Booking />
