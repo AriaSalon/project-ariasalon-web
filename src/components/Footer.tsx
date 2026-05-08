@@ -16,8 +16,6 @@ const Footer = () => (
         <a href="tel:+4553770037" className="hover:text-primary transition-colors">+45 53 77 00 37</a>
         {" "}·{" "}
         <Link to="/privatlivspolitik" className="hover:text-primary transition-colors">Privatlivspolitik</Link>
-        {" "}·{" "}
-        <Link to="/admin" className="text-muted-foreground/60 hover:text-primary transition-colors">Admin</Link>
       </p>
       <p className="text-xs text-muted-foreground/50">Frisør på Vesterbro, København</p>
       <div className="flex justify-center pt-1">
@@ -30,6 +28,14 @@ const Footer = () => (
         >
           <FacebookIcon />
         </a>
+      </div>
+      <div className="pt-4 border-t border-border/40 mt-4">
+        <Link
+          to="/admin"
+          className="inline-flex items-center px-5 py-2 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+        >
+          Admin
+        </Link>
       </div>
     </div>
   </footer>
