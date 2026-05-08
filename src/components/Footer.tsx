@@ -32,7 +32,7 @@ const Footer = () => (
       <div className="pt-4 border-t border-border/40 mt-4">
         <Link
           to="/admin"
-          className="inline-flex items-center px-5 py-2 rounded-md border border-border text-xs font-medium text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+          className="inline-flex items-center px-5 py-2 rounded-md bg-primary text-background text-xs font-medium hover:opacity-90 transition-opacity"
         >
           Admin
         </Link>
