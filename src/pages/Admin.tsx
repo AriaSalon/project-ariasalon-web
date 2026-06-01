@@ -267,9 +267,9 @@ const Admin = () => {
 
   const events = bookings.map(bookingToEvent);
 
-  function handleLogout() {
-    sessionStorage.removeItem("admin_token");
-    navigate("/");
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    navigate("/admin/login");
   }
 
   function handleEventClick({ event }: EventClickArg) {

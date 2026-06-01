@@ -1,21 +1,25 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string;
+import { supabase } from "@/lib/supabase";
 
 const AdminLogin = () => {
-  const [input, setInput] = useState("");
-  const [error, setError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (input === ADMIN_PASSWORD) {
-      sessionStorage.setItem("admin_access", "true");
-      navigate("/admin");
+    setLoading(true);
+    setError(null);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setError("Forkert e-mail eller adgangskode");
     } else {
-      setError(true);
+      navigate("/admin");
     }
+    setLoading(false);
   }
 
   return (
@@ -28,21 +32,31 @@ const AdminLogin = () => {
 
         <form onSubmit={handleSubmit} className="bg-secondary rounded-xl p-6 border border-border space-y-4">
           <div>
+            <label className="block text-sm font-medium mb-1.5">E-mail</label>
+            <input
+              type="email"
+              autoFocus
+              value={email}
+              onChange={e => { setEmail(e.target.value); setError(null); }}
+              className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary transition-shadow"
+            />
+          </div>
+          <div>
             <label className="block text-sm font-medium mb-1.5">Adgangskode</label>
             <input
               type="password"
-              autoFocus
-              value={input}
-              onChange={e => { setInput(e.target.value); setError(false); }}
+              value={password}
+              onChange={e => { setPassword(e.target.value); setError(null); }}
               className="w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary transition-shadow"
             />
-            {error && <p className="text-destructive text-xs mt-1.5">Forkert adgangskode</p>}
+            {error && <p className="text-destructive text-xs mt-1.5">{error}</p>}
           </div>
           <button
             type="submit"
-            className="w-full rounded-md bg-primary text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity"
+            disabled={loading}
+            className="w-full rounded-md bg-primary text-background py-2.5 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
-            Log ind
+            {loading ? "Logger ind..." : "Log ind"}
           </button>
         </form>
       </div>
